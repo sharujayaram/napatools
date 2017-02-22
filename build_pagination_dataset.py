@@ -168,8 +168,8 @@ for i,item in enumerate(sys.argv):
     elif item == "-f":
         _metafile = sys.argv[i+1]
 
-if _server and _bucket and _items and _metafile is not None:
+if _server and _bucket and _items and _metafile:
     run(s = _server, b = _bucket, p = _password, i = _items, f = _metafile)
 else:
     print("Usage build_pagination_dataset.py -s <server> -b <bucket_name> -p <bucket_password if any> "
-          "-i <items>  -f <meta file name w/o path")
+          "-i <items>  -f <meta file name w/o path>")
