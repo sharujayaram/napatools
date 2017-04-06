@@ -21,8 +21,8 @@ def run(batch_size, total_batches, group, s, b, p):
         conn_str = "{} -p {}".format(conn_str, p)
 
     for i in range(0, total_batches):
-        p = subprocess.Popen("./bin/fakeit -n {} -d couchbase "
-                             "{} --offset {}".format(batch_size,conn_str,
+        p = subprocess.Popen("./bin/fakeit -d couchbase "
+                             "{} --offset {}".format(conn_str,
                                                      batch_size*group*total_batches + i*batch_size),
                               shell=True,
                               stdout=subprocess.PIPE,
