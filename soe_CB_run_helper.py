@@ -99,10 +99,10 @@ def action_run():
         for i in (1,2,3,4):
 
             if (i != 4):
-                threads = int(threads/4)
+                t = int(threads/4)
             else:
-                threads = threads - int(threads/4) *3
-            cmd = get_ycsb_run_cmd(workload, host, threads)
+                t = threads - int(threads/4) *3
+            cmd = get_ycsb_run_cmd(workload, host, t)
             print "Executing command: {}".format(cmd)
             p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                  cwd="../clones/YCSB_{}".format(i))
@@ -122,7 +122,8 @@ def action_run():
 def get_ycsb_run_cmd(workload, host, threads):
     return "./bin/ycsb run couchbase2 -P workloads/soe/{} " \
            "-p couchbase.host={} -p couchbase.bucket={} -p couchbase.password={} " \
-           "-p operationcount=10000000 -p maxexecutiontime=600 -threads {}".format(workload, host, BUCKET,PWD, threads)
+           "-p operationcount=10000000 -p maxexecutiontime=600 -threads {} " \
+           "-p couchbase.kv=false".format(workload, host, BUCKET,PWD, threads)
 
 for i,item in enumerate(sys.argv):
     if item == "-action":
