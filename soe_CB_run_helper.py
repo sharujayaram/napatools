@@ -87,6 +87,7 @@ def action_run():
     workload = ""
     host = ""
     threads = 0
+    kv = ""
     for i, item in enumerate(sys.argv):
         if item == "-workload":
             workload = sys.argv[i+1]
@@ -94,6 +95,8 @@ def action_run():
             host = sys.argv[i+1]
         elif item == "-threads":
             threads = int(sys.argv[i+1])
+        elif item == "-kv":
+            kv = int(sys.argv[i+1])
 
     if threads > 35:
         for i in (1,2,3,4):
@@ -102,7 +105,7 @@ def action_run():
                 t = int(threads/4)
             else:
                 t = threads - int(threads/4) *3
-            cmd = get_ycsb_run_cmd(workload, host, t)
+            cmd = get_ycsb_run_cmd(workload, host, t, kv)
             print "Executing command: {}".format(cmd)
             p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                  cwd="../clones/YCSB_{}".format(i))
@@ -111,7 +114,7 @@ def action_run():
             retval = p.wait()
 
     else:
-        cmd = get_ycsb_run_cmd(workload, host, threads)
+        cmd = get_ycsb_run_cmd(workload, host, threads, kv)
         print "Executing command: {}".format(cmd)
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="../YCSB")
         for line in p.stdout.readlines():
@@ -119,11 +122,11 @@ def action_run():
         retval = p.wait()
 
 
-def get_ycsb_run_cmd(workload, host, threads):
+def get_ycsb_run_cmd(workload, host, threads, kv):
     return "./bin/ycsb run couchbase2 -P workloads/soe/{} " \
            "-p couchbase.host={} -p couchbase.bucket={} -p couchbase.password={} " \
-           "-p operationcount=10000000 -p maxexecutiontime=600 -threads {} " \
-           "-p couchbase.kv=false".format(workload, host, BUCKET,PWD, threads)
+           "-p operationcount=900000000 -p maxexecutiontime=600 -threads {} -p couchbase.kv={}" \
+           "-p couchbase.kv=false".format(workload, host, BUCKET,PWD, threads, kv)
 
 for i,item in enumerate(sys.argv):
     if item == "-action":
