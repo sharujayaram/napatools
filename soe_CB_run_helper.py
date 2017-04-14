@@ -125,8 +125,8 @@ def action_run():
 def get_ycsb_run_cmd(workload, host, threads, kv):
     return "./bin/ycsb run couchbase2 -P workloads/soe/{} " \
            "-p couchbase.host={} -p couchbase.bucket={} -p couchbase.password={} " \
-           "-p operationcount=900000000 -p maxexecutiontime=600 -threads {} -p couchbase.kv={}" \
-           "-p couchbase.kv=false".format(workload, host, BUCKET,PWD, threads, kv)
+           "-p operationcount=900000000 -p maxexecutiontime=600 -threads {} " \
+           "-p couchbase.kv={}".format(workload, host, BUCKET,PWD, threads, kv)
 
 for i,item in enumerate(sys.argv):
     if item == "-action":
