@@ -96,7 +96,7 @@ def action_run():
         elif item == "-threads":
             threads = int(sys.argv[i+1])
         elif item == "-kv":
-            kv = int(sys.argv[i+1])
+            kv = sys.argv[i+1]
 
     if threads > 35:
         for i in (1,2,3,4):
