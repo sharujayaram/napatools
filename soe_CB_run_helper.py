@@ -18,12 +18,12 @@ INDEX_6 = "CREATE INDEX ix6 ON `" + BUCKET + \
 INDEX_7 = "CREATE INDEX ix10 ON `" + BUCKET + "`(address.zip,day,order_list)"
 
 INDEXING_MAP = {
-    "workloadsa": None,
-    "workloadsb": None,
-    "workloadsc": None,
-    "workloadsd": None,
-    "workloadse": None,
-    "workloadsf": None,
+    "workloadsa": (INDEX_1,),
+    "workloadsb": (INDEX_1,),
+    "workloadsc": (INDEX_1,),
+    "workloadsd": (INDEX_1,),
+    "workloadse": (INDEX_1,),
+    "workloadsf": (INDEX_1,),
     "workloadsg": (INDEX_3,),
     "workloadsh": (INDEX_2,),
     "workloadsi": (INDEX_4,),
