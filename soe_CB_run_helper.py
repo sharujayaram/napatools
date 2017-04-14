@@ -41,7 +41,7 @@ def action_createindex():
     for i, item in enumerate(sys.argv):
         if item == "-workload":
             workload = sys.argv[i+1]
-        elif item == "-masterhost":
+        elif item == "-master_host":
             host = sys.argv[i+1]
 
     if INDEXING_MAP[workload] != None:
