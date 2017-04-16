@@ -3,6 +3,7 @@ from threading import Thread
 import sys
 import requests
 
+
 USER = "Administrator"
 PWD = "password"
 BUCKET = "bucket-1"
@@ -82,8 +83,17 @@ def action_load():
     retval = p.wait()
 
 
-def action_run():
+def run_thread(workload, host, t, kv, i):
+    cmd = get_ycsb_run_cmd(workload, host, t, kv)
+    print "Executing command: {}".format(cmd)
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                         cwd="../clones/YCSB_{}".format(i))
+    for line in p.stdout.readlines():
+        print line,
+    retval = p.wait()
 
+
+def action_run():
     workload = ""
     host = ""
     threads = 0
@@ -100,19 +110,13 @@ def action_run():
 
     if threads > 35:
         for i in (1,2,3,4):
-
-            if (i != 4):
+            if i != 4:
                 t = int(threads/4)
             else:
                 t = threads - int(threads/4) *3
-            cmd = get_ycsb_run_cmd(workload, host, t, kv)
-            print "Executing command: {}".format(cmd)
-            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                 cwd="../clones/YCSB_{}".format(i))
-            for line in p.stdout.readlines():
-                print line,
-            retval = p.wait()
-
+        new_thread = Thread(target=run_thread, args=(workload, host, t, kv, i))
+        new_thread.start()
+           
     else:
         cmd = get_ycsb_run_cmd(workload, host, threads, kv)
         print "Executing command: {}".format(cmd)
