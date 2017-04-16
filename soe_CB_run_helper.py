@@ -114,9 +114,9 @@ def action_run():
                 t = int(threads/4)
             else:
                 t = threads - int(threads/4) *3
-        new_thread = Thread(target=run_thread, args=(workload, host, t, kv, i))
-        new_thread.start()
-           
+            new_thread = Thread(target=run_thread, args=(workload, host, t, kv, i))
+            new_thread.start()
+
     else:
         cmd = get_ycsb_run_cmd(workload, host, threads, kv)
         print "Executing command: {}".format(cmd)
