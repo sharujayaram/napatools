@@ -83,8 +83,8 @@ def action_load():
     retval = p.wait()
 
 
-def run_thread(workload, host, t, kv, i):
-    cmd = get_ycsb_run_cmd(workload, host, t, kv)
+def run_thread(workload, host, t, kv, log, i):
+    cmd = get_ycsb_run_cmd(workload, host, t, kv, "{}_instance{}".format(log, i))
     print "Executing command: {}".format(cmd)
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          cwd="../clones/YCSB_{}".format(i))
@@ -98,6 +98,7 @@ def action_run():
     host = ""
     threads = 0
     kv = ""
+    log = ""
     for i, item in enumerate(sys.argv):
         if item == "-workload":
             workload = sys.argv[i+1]
@@ -107,6 +108,8 @@ def action_run():
             threads = int(sys.argv[i+1])
         elif item == "-kv":
             kv = sys.argv[i+1]
+        elif item == "-kv":
+            kv = sys.argv[i+1]
 
     if threads > 35:
         for i in (1,2,3,4):
@@ -114,11 +117,11 @@ def action_run():
                 t = int(threads/4)
             else:
                 t = threads - int(threads/4) *3
-            new_thread = Thread(target=run_thread, args=(workload, host, t, kv, i))
+            new_thread = Thread(target=run_thread, args=(workload, host, t, kv, log, i))
             new_thread.start()
 
     else:
-        cmd = get_ycsb_run_cmd(workload, host, threads, kv)
+        cmd = get_ycsb_run_cmd(workload, host, threads, kv, log)
         print "Executing command: {}".format(cmd)
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="../YCSB")
         for line in p.stdout.readlines():
@@ -126,11 +129,11 @@ def action_run():
         retval = p.wait()
 
 
-def get_ycsb_run_cmd(workload, host, threads, kv):
+def get_ycsb_run_cmd(workload, host, threads, kv, log):
     return "./bin/ycsb run couchbase2 -P workloads/soe/{} " \
            "-p couchbase.host={} -p couchbase.bucket={} -p couchbase.password={} " \
            "-p operationcount=900000000 -p maxexecutiontime=600 -threads {} " \
-           "-p couchbase.kv={}".format(workload, host, BUCKET,PWD, threads, kv)
+           "-p couchbase.kv={} -p exportfile ../{}".format(workload, host, BUCKET,PWD, threads, kv, log)
 
 for i,item in enumerate(sys.argv):
     if item == "-action":
