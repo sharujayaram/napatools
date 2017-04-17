@@ -84,7 +84,7 @@ def action_load():
 
 
 def run_thread(workload, host, t, kv, log, i):
-    cmd = get_ycsb_run_cmd(workload, host, t, kv, "{}_instance{}".format(log, i))
+    cmd = get_ycsb_run_cmd(workload, host, t, kv, "{}_i{}".format(log, i))
     print "Executing command: {}".format(cmd)
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          cwd="../clones/YCSB_{}".format(i))
@@ -108,8 +108,8 @@ def action_run():
             threads = int(sys.argv[i+1])
         elif item == "-kv":
             kv = sys.argv[i+1]
-        elif item == "-kv":
-            kv = sys.argv[i+1]
+        elif item == "-log":
+            log = sys.argv[i+1]
 
     if threads > 35:
         for i in (1,2,3,4):
@@ -133,7 +133,7 @@ def get_ycsb_run_cmd(workload, host, threads, kv, log):
     return "./bin/ycsb run couchbase2 -P workloads/soe/{} " \
            "-p couchbase.host={} -p couchbase.bucket={} -p couchbase.password={} " \
            "-p operationcount=900000000 -p maxexecutiontime=600 -threads {} " \
-           "-p couchbase.kv={} -p exportfile ../{}".format(workload, host, BUCKET,PWD, threads, kv, log)
+           "-p couchbase.kv={} -p exportfile ../{}.log".format(workload, host, BUCKET,PWD, threads, kv, log)
 
 for i,item in enumerate(sys.argv):
     if item == "-action":
