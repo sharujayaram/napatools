@@ -2,6 +2,7 @@ import subprocess
 from threading import Thread
 import sys
 import requests
+import time
 
 
 USER = "Administrator"
@@ -113,6 +114,7 @@ def action_run():
 
     if threads > 35:
         for i in (1,2,3,4):
+            time.sleep(10)
             if i != 4:
                 t = int(threads/4)
             else:
