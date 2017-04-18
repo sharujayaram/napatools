@@ -100,6 +100,7 @@ def action_run():
     threads = 0
     kv = ""
     log = ""
+    insertstart = ""
     for i, item in enumerate(sys.argv):
         if item == "-workload":
             workload = sys.argv[i+1]
@@ -111,6 +112,8 @@ def action_run():
             kv = sys.argv[i+1]
         elif item == "-log":
             log = sys.argv[i+1]
+        elif item == "-insertstart":
+            insertstart = sys.argv[i+1]
 
     if threads > 35:
         for i in (1,2,3,4):
@@ -131,11 +134,18 @@ def action_run():
         retval = p.wait()
 
 
-def get_ycsb_run_cmd(workload, host, threads, kv, log):
+def get_ycsb_run_cmd(workload, host, threads, kv, log, insertstart):
     return "./bin/ycsb run couchbase2 -P workloads/soe/{} " \
            "-p couchbase.host={} -p couchbase.bucket={} -p couchbase.password={} " \
            "-p operationcount=900000000 -p maxexecutiontime=600 -threads {} " \
-           "-p couchbase.kv={} -p exportfile=../{}.log".format(workload, host, BUCKET,PWD, threads, kv, log)
+           "-p couchbase.kv={} -p exportfile=../{}.log -p insertstart={}".format(workload,
+                                                                                 host,
+                                                                                 BUCKET,
+                                                                                 PWD,
+                                                                                 threads,
+                                                                                 kv,
+                                                                                 log,
+                                                                                 insertstart)
 
 for i,item in enumerate(sys.argv):
     if item == "-action":
