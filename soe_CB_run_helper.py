@@ -46,6 +46,7 @@ def action_createindex():
         elif item == "-master_host":
             host = sys.argv[i+1]
 
+
     if INDEXING_MAP[workload] != None:
         for indexdef in INDEXING_MAP[workload]:
             api = 'http://{}:8093/query/service'.format(host)
@@ -59,6 +60,7 @@ def action_load():
     cached = ""
     host = ""
     workload = ""
+    insertstart = ""
     for i, item in enumerate(sys.argv):
         if item == "-total_items":
             total = sys.argv[i+1]
@@ -68,15 +70,13 @@ def action_load():
             host = sys.argv[i+1]
         elif item == "-workload":
             workload = sys.argv[i+1]
+        elif item == "-insertstart":
+            insertstart = sys.argv[i+1]
 
     cmd = "./bin/ycsb load couchbase2 -P workloads/soe/{} " \
           "-p couchbase.host={} -p couchbase.bucket={} -p couchbase.password={} " \
-          "-p operationcount=1 -p recordcount={} -p totalrecordcount={} -threads 20".format(workload,
-                                                                                            host,
-                                                                                            BUCKET,
-                                                                                            PWD,
-                                                                                            cached,
-                                                                                            total)
+          "-p operationcount=1 -p recordcount={} -p totalrecordcount={} -threads 20 -p insertstart={}".\
+        format(workload, host, BUCKET, PWD, cached, total, insertstart)
     print "Executing command: {}".format(cmd)
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="../YCSB")
     for line in p.stdout.readlines():
