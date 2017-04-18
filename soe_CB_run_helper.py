@@ -84,8 +84,8 @@ def action_load():
     retval = p.wait()
 
 
-def run_thread(workload, host, t, kv, log, i):
-    cmd = get_ycsb_run_cmd(workload, host, t, kv, "{}_i{}".format(log, i))
+def run_thread(workload, host, t, kv, log, i, insertstart):
+    cmd = get_ycsb_run_cmd(workload, host, t, kv, "{}_i{}".format(log, i), insertstart)
     print "Executing command: {}".format(cmd)
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          cwd="../clones/YCSB_{}".format(i))
@@ -122,11 +122,11 @@ def action_run():
                 t = int(threads/4)
             else:
                 t = threads - int(threads/4) *3
-            new_thread = Thread(target=run_thread, args=(workload, host, t, kv, log, i))
+            new_thread = Thread(target=run_thread, args=(workload, host, t, kv, log, i, insertstart))
             new_thread.start()
 
     else:
-        cmd = get_ycsb_run_cmd(workload, host, threads, kv, log)
+        cmd = get_ycsb_run_cmd(workload, host, threads, kv, log, insertstart)
         print "Executing command: {}".format(cmd)
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="../YCSB")
         for line in p.stdout.readlines():
