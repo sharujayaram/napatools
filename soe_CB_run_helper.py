@@ -12,12 +12,13 @@ BUCKET = "bucket-1"
 
 INDEX_1 = "CREATE PRIMARY INDEX ON `" + BUCKET + "`"
 INDEX_2 = "CREATE INDEX zip ON `" + BUCKET + "`(address.zip)"
-INDEX_3 = "CREATE index ix1 ON `" + BUCKET + "`(country, age_group, DATE_PART_STR(dob,'year'))"
+INDEX_3 = "CREATE index ix1 ON `" + BUCKET + "`(address.country, age_group, DATE_PART_STR(dob,'year'))"
 INDEX_4 = "CREATE INDEX prevzip ON `" + BUCKET + "`(address.prev_address.zip)"
 INDEX_5 = "CREATE INDEX ix5 ON `" + BUCKET + "`(DISTINCT devices)"
 INDEX_6 = "CREATE INDEX ix6 ON `" + BUCKET + \
           "`(DISTINCT ARRAY ( DISTINCT ARRAY c FOR c IN v.cities END ) FOR v IN visited_places END)"
 INDEX_7 = "CREATE INDEX ix10 ON `" + BUCKET + "`(address.zip,day,order_list)"
+
 
 INDEXING_MAP = {
     "workloadsa": (INDEX_1,),
