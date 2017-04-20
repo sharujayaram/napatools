@@ -17,7 +17,7 @@ INDEX_4 = "CREATE INDEX prevzip ON `" + BUCKET + "`(address.prev_address.zip)"
 INDEX_5 = "CREATE INDEX ix5 ON `" + BUCKET + "`(DISTINCT devices)"
 INDEX_6 = "CREATE INDEX ix6 ON `" + BUCKET + \
           "`(DISTINCT ARRAY ( DISTINCT ARRAY c FOR c IN v.cities END ) FOR v IN visited_places END)"
-INDEX_7 = "CREATE INDEX ix10 ON `" + BUCKET + "`(address.zip,day,order_list)"
+INDEX_7 = "CREATE INDEX ix10 ON `" + BUCKET + "`(address.zip,month,order_list)"
 
 
 INDEXING_MAP = {
