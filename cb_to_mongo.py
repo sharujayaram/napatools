@@ -20,7 +20,7 @@ def transfer(threads, customers, cbpassword, cbbucket, mongodb, mongotable, offs
 
 def insert_to_mongo(id, doc, mcoll):
     post_id = mcoll.insert_one(doc).inserted_id
-    print "document {} has been inserted to mongo".format(post_id)
+    //print "document {} has been inserted to mongo".format(post_id)
 
 
 def run_batch(size, id, cbpassword, cbbucket, mongodb, mongotable, offset):
