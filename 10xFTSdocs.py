@@ -28,12 +28,12 @@ def run_batch(size, id, cbpassword, cbbucket, offset):
     max = min + size
 
     for i in range (min, max):
-        doc_id = "{}".format(i)
-        doc = cb.get(doc_id).value
+        k = hex(i)[2:]
+        doc = cb.get(k).value
         for n in range (1, 10):
-            key = "{}_{}".format(i,n)
+            key = "{}_{}".format(k,n)
             cb.upsert(key, doc)
-            print "inserted doc {}".format(key)
+            #print "inserted doc {}".format(key)
 
 threads = 20
 cbpassword = ""
