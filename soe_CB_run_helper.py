@@ -11,15 +11,14 @@ BUCKET = "bucket-1"
 
 
 INDEX_1 = "CREATE PRIMARY INDEX ON `" + BUCKET + "`"
-INDEX_2 = "CREATE INDEX zip ON `" + BUCKET + "`(address.zip)"
-INDEX_3 = "CREATE index ix1 ON `" + BUCKET + "`(address.country, age_group, DATE_PART_STR(dob,'year'))"
-INDEX_4 = "CREATE INDEX prevzip ON `" + BUCKET + "`(address.prev_address.zip)"
-INDEX_5 = "CREATE INDEX ix5 ON `" + BUCKET + "`(DISTINCT devices)"
-INDEX_6 = "CREATE INDEX ix6 ON `" + BUCKET + "`(DISTINCT ARRAY (DISTINCT ARRAY " \
+INDEX_2 = "CREATE INDEX ix1 ON `" + BUCKET + "`(address.zip)"
+INDEX_3 = "CREATE index ix2 ON `" + BUCKET + "`(address.country, age_group, DATE_PART_STR(dob,'year'))"
+INDEX_4 = "CREATE INDEX ix3 ON `" + BUCKET + "`(address.prev_address.zip)"
+INDEX_5 = "CREATE INDEX ix4 ON `" + BUCKET + "`(DISTINCT devices)"
+INDEX_6 = "CREATE INDEX ix5 ON `" + BUCKET + "`(DISTINCT ARRAY (DISTINCT ARRAY " \
                 "(v.country || \".\" || c) FOR c IN v.cities END) FOR v IN visited_places END);"
-INDEX_7 = "CREATE INDEX ix10 ON `" + BUCKET + "`(address.zip,month,order_list)"
-
-
+INDEX_7 = "CREATE INDEX ix6 ON `" + BUCKET + "`(address.zip, order_list)"
+INDEX_8 = "CREATE INDEX ix7 ON `" + BUCKET + "`(address.zip, month, order_list, sale_price)"
 
 
 INDEXING_MAP = {
@@ -35,8 +34,8 @@ INDEXING_MAP = {
     "workloadsj": (INDEX_5,),
     "workloadsk": (INDEX_6,),
     "workloadsl1": (INDEX_7,),
-    "workloadsl2": (INDEX_7,),
-    "workloadsmix": (INDEX_1, INDEX_2, INDEX_3, INDEX_4, INDEX_5, INDEX_6, INDEX_7),
+    "workloadsl2": (INDEX_8,),
+    "workloadsmix": (INDEX_1, INDEX_2, INDEX_3, INDEX_4, INDEX_5, INDEX_6, INDEX_7, INDEX_8)
 }
 
 
