@@ -22,7 +22,7 @@ mkdir /data/mongodb/shard193
 
 ==== configure ====
 
-- create config server replica set  (190):
+- create config server replica set  (190-194):
 numactl --interleave=all mongod --config config_server.cfg
 
 
@@ -46,8 +46,24 @@ rs.initiate(
 
 
 - create 4 replica sets with 1 primary 1 replica setup
-
+190:
 numactl --interleave=all mongod --config shard_190.cfg
+numactl --interleave=all mongod --config shard_191.cfg
+
+191:
+numactl --interleave=all mongod --config shard_191.cfg
+numactl --interleave=all mongod --config shard_192.cfg
+
+192:
+numactl --interleave=all mongod --config shard_192.cfg
+numactl --interleave=all mongod --config shard_193.cfg
+
+193:
+numactl --interleave=all mongod --config shard_193.cfg
+numactl --interleave=all mongod --config shard_190.cfg
+
+
+204:
 mongo --host 172.23.100.190 --port 2719
 rs.initiate(
   {
@@ -60,7 +76,6 @@ rs.initiate(
   }
 )
 
-numactl --interleave=all mongod --config shard_191.cfg
 mongo --host 172.23.100.191 --port 2718
 rs.initiate(
   {
@@ -73,8 +88,7 @@ rs.initiate(
   }
 )
 
-numactl --interleave=all mongod --config shard_192.cfg
-mongo --host 172.23.100.192 --port 2717
+mongo --host 172.23.100.192 --port 27017
 rs.initiate(
   {
     _id: "SHRD192",
@@ -86,7 +100,6 @@ rs.initiate(
   }
 )
 
-numactl --interleave=all mongod --config shard_193.cfg
 mongo --host 172.23.100.193 --port 2716
 rs.initiate(
   {
@@ -99,11 +112,13 @@ rs.initiate(
   }
 )
 
+
 - config mongos (204-207)
 mongos --config mongos_server.cfg
 
+
 - connect to mongos instance (204)
-mongos --host localhost --port 27021
+mongo --host localhost --port 27021
 
 - add shards replica sets to cluster:
 sh.addShard("SHRD190/172.23.100.190:27019")
