@@ -27,7 +27,7 @@ numactl --interleave=all mongod --config config_server.cfg
 
 
 - connect to config server replica set member (204):
-mongo --host 172.23.100.190 --port 2720
+mongo --host 172.23.100.190 --port 27020
 
 - setup config replicas:
 rs.initiate(
