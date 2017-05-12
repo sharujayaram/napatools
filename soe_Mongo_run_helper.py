@@ -77,10 +77,11 @@ def action_run():
         retval = p.wait()
 
 
-def get_ycsb_run_cmd(workload, host, threads, kv, log, insertstart):
+def get_ycsb_run_cmd(workload, threads, log, insertstart):
     return "./bin/ycsb run mongodb -P workloads/soe/{} -p mongodb.url={} -p operationcount=900000000 " \
            "-p maxexecutiontime=600 -threads {} -p exportfile=../{}.log -p insertstart={}".format(workload,
                                                                                                   MONGODBURL,
+                                                                                                  threads,
                                                                                                   log,
                                                                                                   insertstart)
 for i,item in enumerate(sys.argv):
