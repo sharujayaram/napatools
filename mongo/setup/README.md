@@ -1,4 +1,5 @@
 config port: 27020
+http://metrics.sc.couchbase.com/
 
 
 
@@ -129,3 +130,4 @@ sh.addShard("SHRD193/172.23.100.193:27016")
 use ycsb
 sh.enableSharding("ycsb")
 db.runCommand({shardCollection: "ycsb.usertable", key: {"_id": "hashed"}, numInitialChunks: 450})
+db.runCommand({setParameter:1, cursorTimeoutMillis: 60000})
