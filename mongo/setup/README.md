@@ -48,27 +48,28 @@ rs.initiate(
 - create 4 replica sets with 1 primary 1 replica setup
 190:
 numactl --interleave=all mongod --config shard_190.cfg
-numactl --interleave=all mongod --config shard_191.cfg
+numactl --interleave=all mongod --config shard_193.cfg
+
 
 191:
 numactl --interleave=all mongod --config shard_191.cfg
-numactl --interleave=all mongod --config shard_192.cfg
-
-192:
-numactl --interleave=all mongod --config shard_192.cfg
-numactl --interleave=all mongod --config shard_193.cfg
-
-193:
-numactl --interleave=all mongod --config shard_193.cfg
 numactl --interleave=all mongod --config shard_190.cfg
 
 
+192:
+numactl --interleave=all mongod --config shard_191.cfg
+numactl --interleave=all mongod --config shard_192.cfg
+
+193:
+numactl --interleave=all mongod --config shard_192.cfg
+numactl --interleave=all mongod --config shard_193.cfg
+
+
 204:
-mongo --host 172.23.100.190 --port 2719
+mongo --host 172.23.100.190 --port 27019
 rs.initiate(
   {
     _id: "SHRD190",
-    configsvr: true,
     members: [
       { _id : 0, host : "172.23.100.190:27019" },
       { _id : 1, host : "172.23.100.191:27019" }
@@ -76,11 +77,10 @@ rs.initiate(
   }
 )
 
-mongo --host 172.23.100.191 --port 2718
+mongo --host 172.23.100.191 --port 27018
 rs.initiate(
   {
     _id: "SHRD191",
-    configsvr: true,
     members: [
       { _id : 0, host : "172.23.100.191:27018" },
       { _id : 1, host : "172.23.100.192:27018" }
@@ -92,7 +92,6 @@ mongo --host 172.23.100.192 --port 27017
 rs.initiate(
   {
     _id: "SHRD192",
-    configsvr: true,
     members: [
       { _id : 0, host : "172.23.100.192:27017" },
       { _id : 1, host : "172.23.100.193:27017" }
@@ -100,11 +99,10 @@ rs.initiate(
   }
 )
 
-mongo --host 172.23.100.193 --port 2716
+mongo --host 172.23.100.193 --port 27016
 rs.initiate(
   {
     _id: "SHRD193",
-    configsvr: true,
     members: [
       { _id : 0, host : "172.23.100.193:27016" },
       { _id : 1, host : "172.23.100.190:27016" }
@@ -122,9 +120,9 @@ mongo --host localhost --port 27021
 
 - add shards replica sets to cluster:
 sh.addShard("SHRD190/172.23.100.190:27019")
-sh.addShard("SHRD191/172.23.100.190:27018")
-sh.addShard("SHRD192/172.23.100.190:27017")
-sh.addShard("SHRD193/172.23.100.190:27016")
+sh.addShard("SHRD191/172.23.100.191:27018")
+sh.addShard("SHRD192/172.23.100.192:27017")
+sh.addShard("SHRD193/172.23.100.193:27016")
 
 
 - ycsb db setup -
