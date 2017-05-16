@@ -4,7 +4,7 @@ import sys
 import requests
 import time
 
-MONGODBURL= "mongodb://localhost:27021/ycsb?w=0"
+MONGODBURL= "mongodb://localhost:27021/ycsb?w=1"
 
 def action_load():
     total = ""
