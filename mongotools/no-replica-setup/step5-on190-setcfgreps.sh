@@ -1,3 +1,5 @@
+set -x
+
 # set replicas for config server
 mongo  --port 27020 < js/setup-config-replicas.js
 

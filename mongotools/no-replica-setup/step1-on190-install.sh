@@ -1,3 +1,5 @@
+set -x
+
 # install
 bash scripts/install-3.2.sh
 

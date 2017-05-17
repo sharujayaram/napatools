@@ -1,3 +1,5 @@
+set -x
+
 # os config
 ulimit -n 10270
 
