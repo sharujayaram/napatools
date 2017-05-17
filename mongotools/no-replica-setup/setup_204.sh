@@ -2,7 +2,7 @@
 bash scripts/install-3.2.sh
 
 # os config
-ulimit -n 10270
+ulimit -n 24000
 
 # start mongos
 mongos --config cfg/mongos_server.cfg

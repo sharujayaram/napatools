@@ -5,7 +5,7 @@ bash scripts/install-3.2.sh
 numactl --interleave=all mongod --config cfg/config_server.cfg
 
 # os config
-ulimit -n 10270
+ulimit -n 24000
 
 # start mongod replica set
 numactl --interleave=all mongod --config cfg/shard_192.cfg

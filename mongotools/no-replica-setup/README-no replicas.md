@@ -1,10 +1,15 @@
 
+#use admin
+#db.shutdownServer({force: true})
+#db.runCommand( { serverStatus: 1 } )
+
+
 
 - create config server replica set  (190-194):
 numactl --interleave=all mongod --config config_server.cfg
 
 
-- connect to config server replica set member (204):
+- connect to config server replica set member (190):
 mongo --host 172.23.100.190 --port 27020
 
 - setup config replicas:
@@ -77,7 +82,7 @@ rs.initiate(
       { _id : 0, host : "172.23.100.193:27016" }
     ]
   }
-)
+)exit
 
 
 - config mongos (204-207)
