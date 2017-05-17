@@ -1,4 +1,5 @@
-
+# install
+bash scripts/install-3.2.sh
 
 # os config
 ulimit -n 10270
@@ -14,4 +15,3 @@ mongo --port 27021 < js/set-cursor-timeout.js
 
 # setup ycsb database
 mongo --port 27021 < js/setup-ycsb-database.js
-

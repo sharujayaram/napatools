@@ -9,7 +9,7 @@ rm -rf /var/lib/mongo
 rm -rf /var/lib/mongod
 rm -rf /data/configdb
 rm -rf /data/mongodb
-cp mongodb-org-2.6.repo /etc/yum.repos.d/mongodb-org-2.6.repo
+cp ../cfg/mongodb-org-2.6.repo /etc/yum.repos.d/mongodb-org-2.6.repo
 yum install -y mongodb-org-3.2.13 mongodb-org-server-3.2.13 mongodb-org-shell-3.2.13 mongodb-org-mongos-3.2.13 mongodb-org-tools-3.2.13
 cd /data
 mkdir configdb

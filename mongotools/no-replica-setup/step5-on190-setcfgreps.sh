@@ -1,9 +1,3 @@
-# install
-bash scripts/install-3.2.sh
-
-# create config server replica set
-numactl --interleave=all mongod --config cfg/config_server.cfg
-
 # set replicas for config server
 mongo  --port 27020 < js/setup-config-replicas.js
 
