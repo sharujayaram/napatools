@@ -2,8 +2,21 @@
 #use admin
 #db.shutdownServer({force: true})
 #db.runCommand( { serverStatus: 1 } )
+#db.runCommand( { getCmdLineOpts: 1 } )
 
+db.collection.createIndex( { <field1>: <type>, <field2>: <type2>, ... } )
+db.collection.createIndex( {"address.country":1, "age_group":1, "dob":1} )
+db.collection.createIndex({"address.prev_address.zip":1})
+db.collection.createIndex({"devices":1})
+db.usertable.createIndex({"visited_places.country":1, "visited_places.cities":1})
+db.usertable.createIndex({"visited_places.country":1})
+db.usertable.createIndex({"visited_places.cities":1})
 
+db.usertable.createIndex({"address.zip":1})
+db.usertable.createIndex({"address.zip":1, "order_list":1})
+db.usertable.createIndex({"month":1})
+db.usertable.createIndex({"sale_price":1})
+db.usertable.createIndex({"month":1, "sale_price":1})
 
 - create config server replica set  (190-194):
 numactl --interleave=all mongod --config config_server.cfg

@@ -70,7 +70,7 @@ rs.initiate(
 )
 
 mongo --host 172.23.100.193 --port 27016
-rs.initiate(
+rs.idnitiate(
   {
     _id: "SHRD193",
     members: [

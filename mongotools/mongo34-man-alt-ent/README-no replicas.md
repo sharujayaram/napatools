@@ -20,8 +20,7 @@ rs.initiate(
 )
 
 
-
-- create 4 replica sets with 1 primary 1 replica setup
+- create 4 replica sets with 1 node only
 204:
 numactl --interleave=all mongod --config shard_204.cfg
 
@@ -88,10 +87,10 @@ mongos --config mongos_server.cfg
 mongo --host localhost --port 27021
 
 - add shards replica sets to cluster:
-sh.addShard("SHRD190/172.23.100.204:27018")
-sh.addShard("SHRD191/172.23.100.205:27018")
-sh.addShard("SHRD192/172.23.100.206:27017")
-sh.addShard("SHRD193/172.23.100.207:27016")
+sh.addShard("SHRD204/172.23.100.204:27018")
+sh.addShard("SHRD205/172.23.100.205:27018")
+sh.addShard("SHRD206/172.23.100.206:27018")
+sh.addShard("SHRD207/172.23.100.207:27018")
 
 
 - ycsb db setup -
