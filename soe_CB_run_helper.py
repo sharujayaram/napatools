@@ -19,6 +19,8 @@ INDEX_6 = "CREATE INDEX ix5 ON `" + BUCKET + "`(DISTINCT ARRAY (DISTINCT ARRAY "
                 "(v.country || \".\" || c) FOR c IN v.cities END) FOR v IN visited_places END);"
 INDEX_7 = "CREATE INDEX ix6 ON `" + BUCKET + "`(address.zip, order_list)"
 INDEX_8 = "CREATE INDEX ix7 ON `" + BUCKET + "`(address.zip, month, order_list, sale_price)"
+INDEX_9 = "CREATE INDEX ix1 ON `" + BUCKET + "`(address.geo_region)"
+INDEX_10 = "CREATE index ix2 ON `" + BUCKET + "`(address.geo_region, age_group, DATE_PART_STR(dob,'year'))"
 
 
 INDEXING_MAP = {
@@ -35,7 +37,9 @@ INDEXING_MAP = {
     "workloadsk": (INDEX_6,),
     "workloadsl1": (INDEX_7,),
     "workloadsl2": (INDEX_8,),
-    "workloadsmix": (INDEX_1, INDEX_2, INDEX_3, INDEX_4, INDEX_5, INDEX_6, INDEX_7, INDEX_8)
+    "workloadsmix": (INDEX_1, INDEX_2, INDEX_3, INDEX_4, INDEX_5, INDEX_6, INDEX_7, INDEX_8),
+    "workloadsg2": (INDEX_9,),
+    "workloadsh3": (INDEX_10,),
 }
 
 
