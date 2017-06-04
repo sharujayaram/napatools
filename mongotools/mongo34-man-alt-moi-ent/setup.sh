@@ -2,7 +2,7 @@ set -x
 
 service mongod stop
 killall -9 mongod
-yum erase $(rpm -qa | grep mongodb-org)
+yum erase $(rpm -qa | grep mongodb)
 rm -rf /var/log/mongo
 rm -rf /var/log/mongod
 rm -rf /var/lib/mongo
