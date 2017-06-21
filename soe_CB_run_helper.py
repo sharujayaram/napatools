@@ -40,6 +40,7 @@ INDEXING_MAP = {
     "workloadsmix": (INDEX_1, INDEX_2, INDEX_3, INDEX_4, INDEX_5, INDEX_6, INDEX_7, INDEX_8),
     "workloadsg2": (INDEX_9,),
     "workloadsh2": (INDEX_10,),
+    "workloadsmix2": (INDEX_9, INDEX_10, INDEX_1, INDEX_4, INDEX_5, INDEX_6, INDEX_7, INDEX_8),
 }
 
 
