@@ -51,7 +51,8 @@ def action_createindex():
             host = sys.argv[i+1]
 
     if INDEXING_MAP[workload] != None:
-        for indexdef in INDEXDEFS[INDEXING_MAP[workload]]:
+        for index in INDEXING_MAP[workload]:
+            indexdef = INDEXDEFS[index]
             if "mix" in workload:
                 api = 'http://{}:8093/query/service'.format(host)
                 data = {'statement': indexdef}
