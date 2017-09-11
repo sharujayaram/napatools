@@ -10,34 +10,34 @@ PWD = "password"
 BUCKET = "bucket-1"
 
 
-INDEX_1 = "CREATE PRIMARY INDEX ON `" + BUCKET + "`"
-INDEX_2 = "CREATE INDEX ix1 ON `" + BUCKET + "`(address.country)"
-INDEX_3 = "CREATE index ix2 ON `" + BUCKET + "`(address.country, age_group, DATE_PART_STR(dob,'year'))"
-INDEX_4 = "CREATE INDEX ix3 ON `" + BUCKET + "`(address.prev_address.country)"
-INDEX_5 = "CREATE INDEX ix4 ON `" + BUCKET + "`(DISTINCT devices)"
-INDEX_6 = "CREATE INDEX ix5 ON `" + BUCKET + "`(DISTINCT ARRAY (DISTINCT ARRAY " \
-                "(v.country || \".\" || c) FOR c IN v.activities END) FOR v IN visited_places END);"
-INDEX_7 = "CREATE INDEX ix6 ON `" + BUCKET + "`(address.country, order_list)"
-INDEX_8 = "CREATE INDEX ix7 ON `" + BUCKET + "`(address.country, month, order_list, sale_price)"
+INDEXDEFS = dict()
 
+INDEXDEFS["INDEX1"] = "CREATE PRIMARY INDEX INDEX1 ON `" + BUCKET + "`"
+INDEXDEFS["INDEX2"] = "CREATE INDEX INDEX2 ON `" + BUCKET + "`(address.country)"
+INDEXDEFS["INDEX3"] = "CREATE index INDEX3 ON `" + BUCKET + "`(address.country, age_group, DATE_PART_STR(dob,'year'))"
+INDEXDEFS["INDEX4"] = "CREATE INDEX INDEX4 ON `" + BUCKET + "`(address.prev_address.country)"
+INDEXDEFS["INDEX5"] = "CREATE INDEX INDEX5 ON `" + BUCKET + "`(DISTINCT devices)"
+INDEXDEFS["INDEX6"] = "CREATE INDEX INDEX6 ON `" + BUCKET + "`(DISTINCT ARRAY (DISTINCT ARRAY " \
+                "(v.country || \".\" || c) FOR c IN v.activities END) FOR v IN visited_places END);"
+INDEXDEFS["INDEX7"] = "CREATE INDEX INDEX7 ON `" + BUCKET + "`(address.country, order_list)"
+INDEXDEFS["INDEX8"] = "CREATE INDEX INDEX8 ON `" + BUCKET + "`(address.country, month, order_list, sale_price)"
 
 
 INDEXING_MAP = {
-    "workloadsa": (INDEX_1,),
-    "workloadsb": (INDEX_1,),
-    "workloadsc": (INDEX_1,),
-    "workloadsd": (INDEX_1,),
-    "workloadse": (INDEX_1,),
-    "workloadsf": (INDEX_1,),
-    "workloadsg": (INDEX_2,),
-    "workloadsh": (INDEX_3,),
-    "workloadsi": (INDEX_4,),
-    "workloadsj": (INDEX_5,),
-    "workloadsk": (INDEX_6,),
-    "workloadsl1": (INDEX_7,),
-    "workloadsl2": (INDEX_8,),
-    "workloadsmix": (INDEX_1, INDEX_2, INDEX_3, INDEX_4, INDEX_5, INDEX_6, INDEX_7, INDEX_8),
-
+    "workloadsa": ("INDEX1"),
+    "workloadsb": ("INDEX1",),
+    "workloadsc": ("INDEX1",),
+    "workloadsd": ("INDEX1",),
+    "workloadse": ("INDEX1",),
+    "workloadsf": ("INDEX1",),
+    "workloadsg": ("INDEX2",),
+    "workloadsh": ("INDEX3",),
+    "workloadsi": ("INDEX4",),
+    "workloadsj": ("INDEX5",),
+    "workloadsk": ("INDEX6",),
+    "workloadsl1": ("INDEX7",),
+    "workloadsl2": ("INDEX8",),
+    "workloadsmix": ("INDEX1", "INDEX2", "INDEX3", "INDEX4", "INDEX5", "INDEX6", "INDEX7", "INDEX8"),
 }
 
 
@@ -50,13 +50,19 @@ def action_createindex():
         elif item == "-master_host":
             host = sys.argv[i+1]
 
-
     if INDEXING_MAP[workload] != None:
-        for indexdef in INDEXING_MAP[workload]:
-            api = 'http://{}:8093/query/service'.format(host)
-            data = {'statement': indexdef}
-            response = requests.post(url=api, data=data, auth=(USER, PWD))
-            print response
+        for indexdef in INDEXDEFS[INDEXING_MAP[workload]]:
+            if "mix" in workload:
+                api = 'http://{}:8093/query/service'.format(host)
+                data = {'statement': indexdef}
+                response = requests.post(url=api, data=data, auth=(USER, PWD))
+                print response
+            else:
+                for suff in ("_1", "_2", "_3", "_4"):
+                    nodedef = indexdef.replace(INDEXING_MAP[workload], "{}_{}".format(INDEXING_MAP[workload], suff))
+                    api = 'http://{}:8093/query/service'.format(host)
+                    data = {'statement': indexdef}
+                    response = requests.post(url=api, data=data, auth=(USER, PWD))
 
 
 def action_load():
@@ -130,7 +136,8 @@ def action_run():
                 t = int(threads/4)
             else:
                 t = threads - int(threads/4) *3
-            new_thread = Thread(target=run_thread, args=(workload, host, t, kv, log, i, insertstart))
+            new_thread = Thread(target=run_thread, args=(workload, host, t, kv, log, i, insertstart,
+                                                         maxexecutiontime, totalrecords))
             new_thread.start()
 
     else:
@@ -157,8 +164,8 @@ def get_ycsb_run_cmd(workload, host, threads, kv, log, insertstart, maxexecution
                                                                                                     insertstart,
                                                                                                     totalrecords)
 
-def consolidate():
 
+def consolidate():
     for i, item in enumerate(sys.argv):
         if item == "-workload":
             workload = sys.argv[i+1]
