@@ -83,6 +83,9 @@ def action_run():
     kv = ""
     log = ""
     insertstart = ""
+    maxexecutiontime = ""
+    totalrecords = ""
+
     for i, item in enumerate(sys.argv):
         if item == "-workload":
             workload = sys.argv[i+1]
