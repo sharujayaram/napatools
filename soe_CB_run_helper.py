@@ -142,13 +142,10 @@ def get_ycsb_run_cmd(workload, host, threads, kv, log, insertstart, maxexecution
 
 def consolidate():
 
-    workload = ""
     path = ""
 
     for i, item in enumerate(sys.argv):
-        if item == "-workload":
-            workload = sys.argv[i+1]
-        elif item == "-path":
+        if item == "-path":
             path = sys.argv[i+1]
 
     file1 = "{}_i1.log".format(path)
@@ -156,62 +153,40 @@ def consolidate():
     file3 = "{}_i1.log".format(path)
     file4 = "{}_i1.log".format(path)
 
-    SOE_INSERT = "SOE_INSERT"
-    SOE_UPDATE = "SOE_UPDATE"
-    SOE_SCAN = "SOE_SCAN"
-    SOE_PAGE = "SOE_PAGE"
-    SOE_SEARCH = "SOE_SEARCH"
-    SOE_NESTSCAN = "SOE_NESTSCAN"
-    SOE_ARRAYSCAN = "SOE_ARRAYSCAN"
-    SOE_ARRAYDEEPSCAN = "SOE_ARRAYDEEPSCAN"
-    SOE_REPORT = "SOE_REPORT"
-    SOE_REPORT2 = "SOE_REPORT2"
-
-    METRIC_95P = "95thPercentileLatency(us)"
-    METRIC_THR = "Throughput(ops/sec)"
+    METRICS = ("SOE_INSERT", "SOE_UPDATE", "SOE_SCAN", "SOE_PAGE", "SOE_SEARCH", "SOE_NESTSCAN",
+               "SOE_ARRAYSCAN", "SOE_ARRAYDEEPSCAN", "SOE_REPORT", "SOE_REPORT2")
 
     FAILED = "FAILED"
     OVERALL = "OVERALL"
 
-    METRIC_MAP = {
-        "workloadse": (SOE_INSERT, SOE_SCAN),
-        "workloadsg": (SOE_INSERT, SOE_UPDATE, SOE_PAGE),
-        "workloadsh": (SOE_INSERT, SOE_UPDATE, SOE_SEARCH),
-        "workloadsi": (SOE_INSERT, SOE_UPDATE, SOE_NESTSCAN),
-        "workloadsj": (SOE_INSERT, SOE_UPDATE, SOE_ARRAYSCAN),
-        "workloadsk": (SOE_INSERT, SOE_UPDATE, SOE_ARRAYDEEPSCAN),
-        "workloadsl1": (SOE_REPORT,),
-        "workloadsl2": (SOE_REPORT2,),
-        "workloadsmix": (SOE_PAGE, SOE_SEARCH, SOE_NESTSCAN, SOE_ARRAYSCAN, SOE_ARRAYDEEPSCAN, SOE_REPORT),
-    }
+    METRICSTAT_95P = "95thPercentileLatency(us)"
+    METRICSTAT_THR = "Throughput(ops/sec)"
 
     results_container = dict()
+    for metric in METRICS:
+        results_container[metric] = 0
+        results_container["{}-{}".format(metric, FAILED)] = 0
     results_container[OVERALL] = 0
-    if workload in METRIC_MAP:
-        for metric in METRIC_MAP[workload]:
-            results_container[metric] = 0
-            results_container["{}_{}".format(metric, FAILED)] = 0
 
     for file in (file1, file2, file3, file4):
         with open(file) as f:
-            content = f.readlines()
-            for metric in results_container.iterkeys():
-                failed_metric = "{}_{}".format(metric, FAILED)
-                if metric == OVERALL:
-                    if OVERALL in content and METRIC_THR in content:
-                        results_container[metric] += float(content.split(",")[2])
-                elif metric in content and   METRIC_95P in content:
-                    results_container[metric] += float(content.split(",")[2])
-                elif failed_metric in content:
-                    results_container[failed_metric] +=1
+            for content in f:
+                for metric in results_container.iterkeys():
+                    report_key = "[{}]".format(metric)
+                    if report_key in content:
+                        if FAILED in content:
+                            results_container[metric] +=1
+                        elif METRICSTAT_95P in content or METRICSTAT_THR in content:
+                            results_container[metric] += float(content.split(",")[2])
 
-        for metric in results_container.iterkeys():
+    for metric in results_container.iterkeys():
+        if results_container[metric] != 0:
             if metric == OVERALL:
                 print "Throughput: {}".format(results_container[metric])
             elif FAILED not in metric:
-                print "{}, 95 percentile latency, ms: {}".format(metric / 4 / 1000)
+                print "{}, 95 percentile latency, ms: {}".format(metric, results_container[metric] / 4 / 1000)
             else:
-                print "{}, total requests: {}"
+                print "{}, total requests: {}".format(metric, results_container[metric])
 
 for i,item in enumerate(sys.argv):
     if item == "-action":
