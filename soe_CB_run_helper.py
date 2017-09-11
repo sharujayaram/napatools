@@ -141,6 +141,10 @@ def get_ycsb_run_cmd(workload, host, threads, kv, log, insertstart, maxexecution
 
 
 def consolidate():
+
+    workload = ""
+    path = ""
+
     for i, item in enumerate(sys.argv):
         if item == "-workload":
             workload = sys.argv[i+1]
