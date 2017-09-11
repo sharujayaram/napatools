@@ -151,10 +151,10 @@ def consolidate():
         elif item == "-path":
             path = sys.argv[i+1]
 
-    file1 = "{}_i1".format(path)
-    file2 = "{}_i1".format(path)
-    file3 = "{}_i1".format(path)
-    file4 = "{}_i1".format(path)
+    file1 = "{}_i1.log".format(path)
+    file2 = "{}_i1.log".format(path)
+    file3 = "{}_i1.log".format(path)
+    file4 = "{}_i1.log".format(path)
 
     SOE_INSERT = "SOE_INSERT"
     SOE_UPDATE = "SOE_UPDATE"
