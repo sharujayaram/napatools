@@ -60,43 +60,14 @@ def action_createindex():
                 print response
             else:
                 for suff in ("_1", "_2", "_3", "_4"):
-                    nodedef = indexdef.replace(index, "{}_{}".format(index, suff))
+                    nodedef = indexdef.replace(index, "{}{}".format(index, suff))
                     api = 'http://{}:8093/query/service'.format(host)
-                    data = {'statement': indexdef}
+                    data = {'statement': nodedef}
                     response = requests.post(url=api, data=data, auth=(USER, PWD))
 
 
-def action_load():
-    total = ""
-    cached = ""
-    host = ""
-    workload = ""
-    insertstart = ""
-    for i, item in enumerate(sys.argv):
-        if item == "-total_items":
-            total = sys.argv[i+1]
-        elif item == "-cache_items":
-            cached = sys.argv[i+1]
-        elif item == "-master_host":
-            host = sys.argv[i+1]
-        elif item == "-workload":
-            workload = sys.argv[i+1]
-        elif item == "-insertstart":
-            insertstart = sys.argv[i+1]
-
-    cmd = "./bin/ycsb load couchbase2 -P workloads/soe/{} " \
-          "-p couchbase.host={} -p couchbase.bucket={} -p couchbase.password={} " \
-          "-p operationcount=1 -p recordcount={} -p totalrecordcount={} -threads 20 -p insertstart={}".\
-        format(workload, host, BUCKET, PWD, cached, total, insertstart)
-    print "Executing command: {}".format(cmd)
-    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="../YCSB")
-    for line in p.stdout.readlines():
-        print line,
-    retval = p.wait()
-
-
-def run_thread(workload, host, t, kv, log, i, insertstart):
-    cmd = get_ycsb_run_cmd(workload, host, t, kv, "{}_i{}".format(log, i), insertstart)
+def run_thread(workload, host, t, kv, log, i, insertstart, maxexecutiontime, totalrecordst):
+    cmd = get_ycsb_run_cmd(workload, host, t, kv, "{}_i{}".format(log, i), insertstart, maxexecutiontime, totalrecordst)
     print "Executing command: {}".format(cmd)
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          cwd="../clones/YCSB_{}".format(i))
@@ -125,9 +96,9 @@ def action_run():
             log = sys.argv[i+1]
         elif item == "-insertstart":
             insertstart = sys.argv[i+1]
-        elif item == "-maxexecutiontime":
-            maxexecutiontime = sys.argv[i+1]
         elif item == "-test_duration":
+            maxexecutiontime = sys.argv[i+1]
+        elif item == "-total_items":
             totalrecords = sys.argv[i + 1]
 
     if threads > 35:
@@ -142,7 +113,7 @@ def action_run():
             new_thread.start()
 
     else:
-        cmd = get_ycsb_run_cmd(workload, host, threads, kv, log, insertstart)
+        cmd = get_ycsb_run_cmd(workload, host, threads, kv, log, insertstart, maxexecutiontime, totalrecords)
         print "Executing command: {}".format(cmd)
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd="../YCSB")
         for line in p.stdout.readlines():
