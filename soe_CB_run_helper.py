@@ -60,7 +60,7 @@ def action_createindex():
                 print response
             else:
                 for suff in ("_1", "_2", "_3", "_4"):
-                    nodedef = indexdef.replace(INDEXING_MAP[workload], "{}_{}".format(index, suff))
+                    nodedef = indexdef.replace(index, "{}_{}".format(index, suff))
                     api = 'http://{}:8093/query/service'.format(host)
                     data = {'statement': indexdef}
                     response = requests.post(url=api, data=data, auth=(USER, PWD))
