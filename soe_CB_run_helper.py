@@ -111,7 +111,7 @@ def action_run():
                 t = int(threads/4)
             else:
                 t = threads - int(threads/4) *3
-            sub_offset = insertstart + ((int(totalrecords) / 10) * (i-1))
+            sub_offset = int(insertstart) + ((int(totalrecords) / 10) * (i-1))
             new_thread = Thread(target=run_thread, args=(workload, host, t, kv, log, i, sub_offset,
                                                          maxexecutiontime, totalrecords))
             new_thread.start()
