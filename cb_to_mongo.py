@@ -7,7 +7,7 @@ import datetime
 
 
 CB_SERVER = "172.23.100.193"
-MDB_SERVER = "172.23.100.204"
+MDB_SERVER = "localhost"
 
 
 def transfer(threads, customers, cbpassword, cbbucket, mongodb, mongotable, offset):
@@ -56,8 +56,8 @@ threads = 20
 customers = 10000000
 cbpassword = ""
 cbbucket = "bucket-1"
-mongodb = "soe"
-mongotable = "bucket"
+mongodb = "ycsb"
+mongotable = "usertable"
 offset = 0
 
 for i, item in enumerate(sys.argv):
