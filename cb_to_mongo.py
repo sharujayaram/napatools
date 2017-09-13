@@ -5,8 +5,9 @@ import json
 import pymongo
 import datetime
 
-#SERVER = "localhost"
-SERVER = "172.23.100.190"
+
+CB_SERVER = "172.23.100.193"
+MDB_SERVER = "172.23.100.204"
 
 
 def transfer(threads, customers, cbpassword, cbbucket, mongodb, mongotable, offset):
@@ -25,11 +26,11 @@ def insert_to_mongo(id, doc, mcoll):
 
 def run_batch(size, id, cbpassword, cbbucket, mongodb, mongotable, offset):
     if cbpassword != "":
-        cb = Bucket("couchbase://{}/{}?operation_timeout=10".format(SERVER, cbbucket), password=cbpassword)
+        cb = Bucket("couchbase://{}/{}?operation_timeout=10".format(CB_SERVER, cbbucket), password=cbpassword)
     else:
-        cb = Bucket("couchbase://{}/{}?operation_timeout=10".format(SERVER))
+        cb = Bucket("couchbase://{}/{}?operation_timeout=10".format(CB_SERVER))
 
-    client = pymongo.MongoClient("mongodb://{}:27017/".format(SERVER))
+    client = pymongo.MongoClient("mongodb://{}:27017/".format(MDB_SERVER))
     mdb = client[mongodb]
     mcollection = mdb[mongotable]
 
