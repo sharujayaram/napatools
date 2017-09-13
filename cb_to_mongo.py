@@ -30,7 +30,7 @@ def run_batch(size, id, cbpassword, cbbucket, mongodb, mongotable, offset):
     else:
         cb = Bucket("couchbase://{}/{}?operation_timeout=10".format(CB_SERVER, cbbucket))
 
-    client = pymongo.MongoClient("mongodb://{}:27017/".format(MDB_SERVER))
+    client = pymongo.MongoClient("mongodb://{}:27021/".format(MDB_SERVER))
     mdb = client[mongodb]
     mcollection = mdb[mongotable]
 
