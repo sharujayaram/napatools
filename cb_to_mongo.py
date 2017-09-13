@@ -28,7 +28,7 @@ def run_batch(size, id, cbpassword, cbbucket, mongodb, mongotable, offset):
     if cbpassword != "":
         cb = Bucket("couchbase://{}/{}?operation_timeout=10".format(CB_SERVER, cbbucket), password=cbpassword)
     else:
-        cb = Bucket("couchbase://{}/{}?operation_timeout=10".format(CB_SERVER))
+        cb = Bucket("couchbase://{}/{}?operation_timeout=10".format(CB_SERVER, cbbucket))
 
     client = pymongo.MongoClient("mongodb://{}:27017/".format(MDB_SERVER))
     mdb = client[mongodb]
