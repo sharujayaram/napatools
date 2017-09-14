@@ -67,4 +67,58 @@ def get_ycsb_run_cmd(workload, threads, log, insertstart, maxexecutiontime, tota
                                                                                 insertstart,
                                                                                 totalrecords)
 
-action_run()
+
+def consolidate():
+
+    path = ""
+
+    for i, item in enumerate(sys.argv):
+        if item == "-path":
+            path = sys.argv[i+1]
+
+    file1 = "{}_i1.log".format(path)
+    file2 = "{}_i1.log".format(path)
+    file3 = "{}_i1.log".format(path)
+    file4 = "{}_i1.log".format(path)
+
+    METRICS = ("SOE_INSERT", "SOE_UPDATE", "SOE_SCAN", "SOE_PAGE", "SOE_SEARCH", "SOE_NESTSCAN",
+               "SOE_ARRAYSCAN", "SOE_ARRAYDEEPSCAN", "SOE_REPORT", "SOE_REPORT2")
+
+    FAILED = "FAILED"
+    OVERALL = "OVERALL"
+
+    METRICSTAT_95P = "95thPercentileLatency(us)"
+    METRICSTAT_THR = "Throughput(ops/sec)"
+
+    results_container = dict()
+    for metric in METRICS:
+        results_container[metric] = 0
+        results_container["{}-{}".format(metric, FAILED)] = 0
+    results_container[OVERALL] = 0
+
+    for file in (file1, file2, file3, file4):
+        with open(file) as f:
+            for content in f:
+                for metric in results_container.iterkeys():
+                    report_key = "[{}]".format(metric)
+                    if report_key in content:
+                        if FAILED in content:
+                            results_container[metric] +=1
+                        elif METRICSTAT_95P in content or METRICSTAT_THR in content:
+                            results_container[metric] += float(content.split(",")[2])
+
+    for metric in results_container.iterkeys():
+        if results_container[metric] != 0:
+            if metric == OVERALL:
+                print "Throughput: {}".format(results_container[metric])
+            elif FAILED not in metric:
+                print "{}, 95 percentile latency, ms: {}".format(metric, results_container[metric] / 4 / 1000)
+            else:
+                print "{}, total requests: {}".format(metric, results_container[metric])
+
+for i,item in enumerate(sys.argv):
+    if item == "-action":
+        if sys.argv[i+1] == "run":
+            action_run()
+        elif sys.argv[i+1] == "consolidate":
+            consolidate()
