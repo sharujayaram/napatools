@@ -38,8 +38,7 @@ def action_run():
         elif item == "-total_items":
             totalrecords = sys.argv[i + 1]
 
-
-    if threads > 35:
+    if threads > 3:
         for i in (1,2,3,4):
             time.sleep(10)
             if i != 4:
