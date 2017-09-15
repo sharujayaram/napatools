@@ -17,7 +17,7 @@ def run_thread(workload, t, log, i, insertstart,  maxexecutiontime, totalrecords
     retval = p.wait()
 
 
-def action_run4():
+def action_run():
     workload = ""
     maxexecutiontime = ""
     threads = 0
@@ -67,7 +67,7 @@ def get_ycsb_run_cmd(workload, threads, log, insertstart, maxexecutiontime, tota
                                                                                 log,
                                                                                 insertstart,
                                                                                 totalrecords)
-def action_run():
+def action_run10():
     workload = ""
     maxexecutiontime = ""
     threads = 0
@@ -119,7 +119,7 @@ def get_ycsb_run_cmd(workload, threads, log, insertstart, maxexecutiontime, tota
                                                                                 totalrecords)
 
 
-def consolidate4():
+def consolidate():
 
     path = ""
 
@@ -228,6 +228,6 @@ for i,item in enumerate(sys.argv):
         if sys.argv[i+1] == "run":
             action_run()
         elif sys.argv[i+1] == "consolidate":
-            consolidate10()
+            consolidate()
 
 
