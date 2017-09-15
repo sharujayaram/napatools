@@ -78,9 +78,9 @@ def consolidate():
             path = sys.argv[i+1]
 
     file1 = "{}_i1.log".format(path)
-    file2 = "{}_i1.log".format(path)
-    file3 = "{}_i1.log".format(path)
-    file4 = "{}_i1.log".format(path)
+    file2 = "{}_i2.log".format(path)
+    file3 = "{}_i3.log".format(path)
+    file4 = "{}_i4.log".format(path)
 
     METRICS = ("SOE_INSERT", "SOE_UPDATE", "SOE_SCAN", "SOE_PAGE", "SOE_SEARCH", "SOE_NESTSCAN",
                "SOE_ARRAYSCAN", "SOE_ARRAYDEEPSCAN", "SOE_REPORT", "SOE_REPORT2")
