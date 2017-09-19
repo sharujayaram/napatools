@@ -7,21 +7,17 @@ import sys
 INSTANCES = 10
 HEAD = "./bin/ycsb run syncgateway -s "
 LOG = open('runafew.log', 'w')
+YCSB_HOME = ".."
 
 threads = list()
+
 
 def log(msg):
     LOG.write(msg + '\n')
 
 
-def copy_ycsb():
-    subprocess.call(["rm YCSB_*", "-rf"])
-    for i in range(0, INSTANCES):
-        subprocess.call(["cp YCSB YCSB_{}".format(i), "-r"])
-
-
 def run_thread(cmd, i):
-    homedir = "YCSB_{}".format(i)
+    homedir = "{}/YCSB_{}".format(YCSB_HOME,i)
     log("Running command {} from {}".format(cmd, homedir))
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          cwd=homedir)
@@ -43,7 +39,7 @@ def run_instance(params, i):
 def consolidate():
     allresults = {}
     for i in range(0, INSTANCES):
-       filename = "YCSB_{}/{}.log".format(i,i)
+       filename = "{}/YCSB_{}/{}.log".format(YCSB_HOME, i, i)
        lines = [line.rstrip('\n') for line in open(filename)]
        for line in lines:
            line = line.strip('\n')
