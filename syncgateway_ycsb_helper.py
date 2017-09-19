@@ -5,7 +5,7 @@ import sys
 
 
 INSTANCES = 10
-HEAD = "./bin/ycsb run syncgateway -s -P workloads/workloada"
+HEAD = "./bin/ycsb run syncgateway -s "
 LOG = open('runafew.log', 'w')
 
 threads = list()
