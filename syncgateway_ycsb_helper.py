@@ -25,16 +25,21 @@ def run_thread(cmd, i):
         log(line),
     retval = p.wait()
 
+
 def run_instance(params, i):
     instance_log = "{}.log".format(i)
     cmd = HEAD
     for param in params:
-        cmd = "{} -p {}={}".format(cmd, param, params[param])
+        if param == "workload":
+            cmd = "{} -P {} ".format(cmd, params["workload"])
+        else:
+            cmd = "{} -p {}={}".format(cmd, param, params[param])
     cmd = "{} -p exportfile={}".format(cmd, instance_log)
 
     new_thread = Thread(target=run_thread, args=(cmd, i))
     threads.append(new_thread)
     new_thread.start()
+
 
 def consolidate():
     allresults = {}
@@ -60,17 +65,21 @@ def consolidate():
             total += float(value)
         avg = long(total/counter)
         allresults[item] = " sum({}) avg({}) count({})".format(total, avg, counter)
-        print "{}, {}".format(item, allresults[item])
 
+    sortedkeys = aggregated_results.keys()
+    sortedkeys.sort()
+    for key in sortedkeys:
+        print "{}, {}".format(key, allresults[key])
 
 
 allparams={}
 for i, item in enumerate(sys.argv):
+    if item == "-P":
+        allparams["workload"] = sys.argv[i+1]
+
     if item == "-p":
         name,value = sys.argv[i+1].split("=")
         allparams[name] = value
-
-#copy_ycsb()
 
 insertstart = 0
 threadcount = 0
