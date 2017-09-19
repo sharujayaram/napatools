@@ -56,7 +56,6 @@ def consolidate():
            else:
                allresults[key] = v
 
-    aggregated_results = {}
     for item in allresults:
         total = 0
         counter = 0
@@ -66,7 +65,7 @@ def consolidate():
         avg = long(total/counter)
         allresults[item] = " sum({}) avg({}) count({})".format(total, avg, counter)
 
-    sortedkeys = aggregated_results.keys()
+    sortedkeys = allresults.keys()
     sortedkeys.sort()
     for key in sortedkeys:
         print "{}, {}".format(key, allresults[key])
