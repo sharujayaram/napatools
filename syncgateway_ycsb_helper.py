@@ -5,6 +5,7 @@ import sys
 
 
 INSTANCES = 10
+INSERTS_PER_INSTANCE = 1000000
 HEAD = "./bin/ycsb run syncgateway -s "
 LOG = open('runafew.log', 'w')
 YCSB_HOME = ".."
@@ -62,7 +63,7 @@ def consolidate():
         for value in allresults[item].split("-"):
             counter+=1
             total += float(value)
-        avg = long(total/counter)
+        avg = float(total/counter)
         allresults[item] = " sum({}) avg({}) count({})".format(total, avg, counter)
 
     sortedkeys = allresults.keys()
@@ -89,15 +90,14 @@ if "threadcount" in allparams:
 
 
 for i in range(0, INSTANCES):
-    sub_insertstart = int (insertstart / INSTANCES)
-    sub_insertstart = sub_insertstart * i + insertstart
+    sub_offset = i * INSERTS_PER_INSTANCE + insertstart
     if threadcount > INSTANCES:
         sub_threadcount = int(threadcount / INSTANCES)
     else:
         sub_threadcount = 1
 
     instace_params = allparams.copy()
-    instace_params["insertstart"] = sub_insertstart
+    instace_params["insertstart"] = sub_offset
     instace_params["threadcount"] = sub_threadcount
 
     run_instance(instace_params, i)
