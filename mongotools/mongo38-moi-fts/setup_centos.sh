@@ -1,5 +1,7 @@
 set -x
 
+chmod 777 /data
+
 service mongod stop
 killall -9 mongod
 yum erase $(rpm -qa | grep mongodb)
