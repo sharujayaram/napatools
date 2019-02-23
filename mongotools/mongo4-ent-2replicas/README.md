@@ -52,15 +52,15 @@ rs.initiate(
 
 - create 4 replica sets with 1 primary 2 replica setup
 204:
-numactl --interleave=all mongod --config cfg/shard204.cfg
-numactl --interleave=all mongod --config cfg/shard205.cfg
-numactl --interleave=all mongod --config cfg/shard206.cfg
+numactl --interleave=all mongod --config cfg/shard_204.cfg
+numactl --interleave=all mongod --config cfg/shard_205.cfg
+numactl --interleave=all mongod --config cfg/shard_206.cfg
 
 
 205:
-numactl --interleave=all mongod --config cfg/shard205.cfg
-numactl --interleave=all mongod --config cfg/shard204.cfg
-numactl --interleave=all mongod --config cfg/shard207.cfg
+numactl --interleave=all mongod --config cfg/shard_205.cfg
+numactl --interleave=all mongod --config cfg/shard_204.cfg
+numactl --interleave=all mongod --config cfg/shard_207.cfg
 
 
 
@@ -84,7 +84,7 @@ rs.initiate(
     _id: "SHRD204",
     members: [
       { _id : 0, host : "172.23.100.204:27014" },
-      { _id : 1, host : "172.23.100.205:27014" }
+      { _id : 1, host : "172.23.100.205:27014" },
       { _id : 2, host : "172.23.100.206:27014" }
     ]
   }
@@ -97,7 +97,7 @@ rs.initiate(
     _id: "SHRD205",
     members: [
       { _id : 0, host : "172.23.100.205:27015" },
-      { _id : 1, host : "172.23.100.204:27015" }
+      { _id : 1, host : "172.23.100.204:27015" },
       { _id : 2, host : "172.23.100.207:27015" }
     ]
   }
@@ -110,7 +110,7 @@ rs.initiate(
     _id: "SHRD206",
     members: [
       { _id : 0, host : "172.23.100.206:27016" },
-      { _id : 1, host : "172.23.100.204:27016" }
+      { _id : 1, host : "172.23.100.204:27016" },
       { _id : 2, host : "172.23.100.207:27016" }
     ]
   }
@@ -123,7 +123,7 @@ rs.initiate(
     _id: "SHRD207",
     members: [
       { _id : 0, host : "172.23.100.207:27017" },
-      { _id : 1, host : "172.23.100.205:27017" }
+      { _id : 1, host : "172.23.100.205:27017" },
       { _id : 2, host : "172.23.100.206:27017" }
     ]
   }
@@ -131,7 +131,7 @@ rs.initiate(
 
 
 - config mongos (190-193)
-mongos --config mongos_server.cfg
+mongos --config cfg/mongos.cfg
 
 
 - connect to mongos instance (190)
@@ -147,5 +147,6 @@ sh.addShard("SHRD207/172.23.100.207:27017")
 - ycsb db setup -
 use ycsb
 sh.enableSharding("ycsb")
+use admin
 db.runCommand({shardCollection: "ycsb.usertable", key: {"_id": "hashed"}, numInitialChunks: 450})
 db.runCommand({setParameter:1, cursorTimeoutMillis: 60000})
