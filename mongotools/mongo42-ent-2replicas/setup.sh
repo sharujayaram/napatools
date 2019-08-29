@@ -2,6 +2,7 @@ set -x
 
 service mongod stop
 killall mongod
+killall mongos
 yum erase $(rpm -qa | grep mongodb-org)
 rm -rf /var/log/mongo
 rm -rf /var/log/mongod
