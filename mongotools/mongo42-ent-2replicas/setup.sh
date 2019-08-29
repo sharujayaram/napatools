@@ -20,4 +20,4 @@ mkdir shard205
 mkdir shard206
 mkdir shard207
 
-ulimit -n 32000
+ulimit -n 64000

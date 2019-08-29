@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-c = MongoClient('localhost', 27021)
+c = MongoClient('172.23.100.190', 27021)
 
 
 c.admin.command('addshard', 'SHRD204/172.23.100.204:27014')
