@@ -14,3 +14,5 @@ c.admin.command('addshard','SHRD207/172.23.100.124:27017')
 
 c.admin.command('enablesharding', 'ycsb')
 
+c.admin.command('shardCollection', 'ycsb.usertable', key={'_id': 'hashed'}, numInitialChunks=450)
+
