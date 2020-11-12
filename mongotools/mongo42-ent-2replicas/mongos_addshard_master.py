@@ -12,7 +12,7 @@ c.admin.command('addshard', 'SHRD206/172.23.100.123:27016')
 c.admin.command('addshard','SHRD207/172.23.100.124:27017')
 
 
-c.admin.command('enablesharding', 'ycsb')
+c.admin.command('enablesharding', 'tpcc')
 
-c.admin.command('shardCollection', 'ycsb.usertable', key={'_id': 'hashed'}, numInitialChunks=450)
+#c.admin.command('shardCollection', 'ycsb.usertable', key={'_id': 'hashed'}, numInitialChunks=450)
 
