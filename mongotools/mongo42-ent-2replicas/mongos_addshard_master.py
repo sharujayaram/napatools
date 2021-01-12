@@ -14,23 +14,23 @@ c.admin.command('addshard','SHRD207/172.23.100.124:27017')
 
 c.admin.command('enablesharding', 'tpcc')
 
-#c.admin.command('shardCollection', 'tpcc.ITEM', key={'_id': 'hashed'}, numInitialChunks=450)
+c.admin.command('shardCollection', 'tpcc.ITEM', key={'_id': 'hashed'}, numInitialChunks=450)
 
-#c.admin.command('shardCollection', 'tpcc.CUSTOMER', key={'_id': 'hashed'}, numInitialChunks=450)
+c.admin.command('shardCollection', 'tpcc.CUSTOMER', key={'C_ID':1})
 
-#c.admin.command('shardCollection', 'tpcc.DISTRICT', key={'_id': 'hashed'}, numInitialChunks=450)
+c.admin.command('shardCollection', 'tpcc.DISTRICT', key={'D_ID': 1})
 
-#c.admin.command('shardCollection', 'tpcc.HISTORY', key={'_id': 'hashed'}, numInitialChunks=450)
+c.admin.command('shardCollection', 'tpcc.HISTORY', key={'_id': 'hashed'}, numInitialChunks=450)
 
-#c.admin.command('shardCollection', 'tpcc.NEW_ORDER', key={'_id': 'hashed'}, numInitialChunks=450)
+c.admin.command('shardCollection', 'tpcc.NEW_ORDER', key={'NO_O_ID': 1})
 
-#c.admin.command('shardCollection', 'tpcc.ORDERS', key={'_id': 'hashed'}, numInitialChunks=450)
+c.admin.command('shardCollection', 'tpcc.ORDERS', key={'O_ID': 1})
 
-#c.admin.command('shardCollection', 'tpcc.ORDER_LINE', key={'_id': 'hashed'}, numInitialChunks=450)
+c.admin.command('shardCollection', 'tpcc.ORDER_LINE', key={'_id': 'hashed'}, numInitialChunks=450)
 
-#c.admin.command('shardCollection', 'tpcc.STOCK', key={'_id': 'hashed'}, numInitialChunks=450)
+c.admin.command('shardCollection', 'tpcc.STOCK', key={'S_I_ID': 1})
 
-#c.admin.command('shardCollection', 'tpcc.WAREHOUSE', key={'_id': 'hashed'}, numInitialChunks=450)
+c.admin.command('shardCollection', 'tpcc.WAREHOUSE', key={'_id': 'hashed'}, numInitialChunks=450)
 
 #c.admin.command('shardCollection', 'tpcc.ITEM', key={'_id': 'hashed'}, numInitialChunks=450)
 
