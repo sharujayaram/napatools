@@ -9,7 +9,7 @@ c.admin.command('addshard', 'SHRD205/172.23.100.122:27015')
 
 c.admin.command('addshard', 'SHRD206/172.23.100.123:27016')
 
-c.admin.command('addshard','SHRD207/172.23.100.124:27017')
+#c.admin.command('addshard','SHRD207/172.23.100.124:27017')
 
 
 c.admin.command('enablesharding', 'tpcc')
